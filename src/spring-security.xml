@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:p="http://www.springframework.org/schema/p"
+            xmlns:context="http://www.springframework.org/schema/context"
+            xmlns:aop="http://www.springframework.org/schema/aop"
+            xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+    <!--Important:when instantate GwtSessionManagement bean,set proxy-target-class as "false" -->
+    <aop:aspectj-autoproxy proxy-target-class="false"/> 
+    <beans:bean class="com.gwt.ss.GwtExceptionTranslator"/>
+    <global-method-security pre-post-annotations="disabled" secured-annotations="enabled" jsr250-annotations="enabled"/>
+    
+        
+    <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
+    	<intercept-url pattern="/ResumeManager*" access="permitAll" />
+    	<intercept-url pattern="/resumemanager/**" access="permitAll"/>
+    	<intercept-url pattern="/mvc/**" access="permitAll"/>
+        <intercept-url pattern="/**/staff" access="hasRole('ROLE_STAFF')" requires-channel="any"/>
+        <intercept-url pattern="/gwtRequest/**" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/springGwtServices/**" access="hasRole('ROLE_USER')" requires-channel="any"/>
+        <form-login login-page="/mvc/login" authentication-failure-url="/mvc/login?authfailed=true" login-processing-url="/mvc/j_spring_security_check"/>
+        <logout invalidate-session="true" success-handler-ref="logoutSuccessHandler" logout-url="/mvc/j_spring_security_logout"/>
+        <!--when using session-management,you need a GwtSessionManagement bean-->
+        <session-management invalid-session-url="/mvc/login?sessionInvalid=true" session-fixation-protection="migrateSession">
+            <concurrency-control max-sessions="10" expired-url="/mvc/login?sessionExpired=true"/>
+        </session-management>
+        <remember-me key="resumemanager"/>
+    </http>
+    
+    
+    <beans:bean class="com.gwt.ss.GwtUsernamePasswordAuthority">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+    </beans:bean>
+    <beans:bean id="logoutSuccessHandler" class="com.gwt.ss.GwtLogoutSuccessHandler" p:logoutSuccessUrl="/mvc/logoutSuccess"/>
+    
+    <!--for sessiong-management-->
+    <beans:bean class="com.gwt.ss.GwtSessionManagement"/>
+    
+    <authentication-manager alias="authenticationManager">
+        <!--authentication-provider user-service-ref="userDetailService"-->
+        <authentication-provider>
+            <password-encoder hash="plaintext"/>
+            <user-service>
+                <user name="staff" password="only" authorities="ROLE_STAFF,ROLE_USER" />
+                <user name="admin" password="user" authorities="ROLE_ADMIN,ROLE_STAFF,ROLE_USER" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>     
+    
+    <!-- Memory DB seem has problem on GAE
+    <beans:bean id="userDetailService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+        <beans:property name="dataSource" ref="dataSource"/>
+    </beans:bean>
+    -->
+</beans:beans>
