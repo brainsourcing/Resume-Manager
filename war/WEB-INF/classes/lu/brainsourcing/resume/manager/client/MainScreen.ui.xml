@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:brain="urn:import:lu.brainsourcing.gwt.user.client"
+	>
+	
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	
+	<g:VerticalPanel>
+	<g:Label>totototototottototototototoototototototototootototo</g:Label>
+		<g:SplitLayoutPanel>
+			<g:west size="200">
+				<!-- User panel -->
+				<g:DecoratedStackPanel ui:field="stackMenu">
+					
+				</g:DecoratedStackPanel> 
+<!-- 					<g:Label>Menu</g:Label> -->
+			</g:west>
+			<g:center>
+				<!-- content -->
+				<g:Label>Content</g:Label>
+			</g:center>
+		</g:SplitLayoutPanel>
+	</g:VerticalPanel>
+	
+</ui:UiBinder>

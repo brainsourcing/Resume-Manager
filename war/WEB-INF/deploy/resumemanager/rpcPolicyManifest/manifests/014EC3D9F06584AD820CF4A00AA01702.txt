@@ -1,0 +1,2 @@
+serviceClass: com.gwt.ss.client.GwtLogin
+path: 5836129683E29B6380BBD34A21F8623B.gwt.rpc

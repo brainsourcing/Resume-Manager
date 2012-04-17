@@ -1,0 +1,2 @@
+serviceClass: lu.brainsourcing.gwt.security.shared.LoginService
+path: C2890137B9CA7CD14A50A10496393CCE.gwt.rpc

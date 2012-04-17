@@ -1,0 +1,2 @@
+serviceClass: lu.brainsourcing.resume.manager.shared.MainScreenService
+path: 6ADA48C0760D642FA0DECB273082D598.gwt.rpc
